@@ -123,7 +123,7 @@ console.log(positiveConstraints);
 
 
 // Filter by constraints
-const words = fs.readFileSync('fives.txt', 'utf-8').split('\n');
+const words = fs.readFileSync('data/fives.txt', 'utf-8').split('\n');
 console.log(words)
 
 let expression = buildExpression(constraints, positiveConstraints);
