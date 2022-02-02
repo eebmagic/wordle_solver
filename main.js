@@ -1,7 +1,7 @@
 const prompt = require('prompt-sync')();
 const fs = require('fs');
 
-function buildExpression(constraints: Array<string>, positiveConstraints: Array<string>) {
+function buildExpression(constraints, positiveConstraints) {
     let out = '^';
     for (let i = 0; i < 5; i++) {
         if (positiveConstraints[i]) {
@@ -19,9 +19,9 @@ function buildExpression(constraints: Array<string>, positiveConstraints: Array<
 // Collect inputs
 let graysString = prompt('Enter all gray letters: ').trim();
 let realGray = graysString.replace(/[^a-z]/gi, '');
-let graySet = new Set<string>(realGray);
+let graySet = new Set(realGray);
 
-let yellows = Array<string>();
+let yellows = [];
 console.log('\nEnter a yellow char (in format ..a.a)')
 console.log('where using . to show unknown spaces.');
 console.log('Write one string for each letter.');
@@ -60,7 +60,7 @@ let greenString;
 while (true) {
     greenString = prompt('green string: ').trim().toLowerCase();
     let filtered = greenString.replace(/[a-z.]/gi, '');
-    let greenSet = new Set<string>(greenString.replace(/[^a-z.]/gi, ''));
+    let greenSet = new Set(greenString.replace(/[^a-z.]/gi, ''));
 
     if (greenString == '') {
         greenString = '.....';
@@ -121,7 +121,7 @@ const words = fs.readFileSync('data/fives.txt', 'utf-8').split('\n');
 console.log(words)
 
 let expression = buildExpression(constraints, positiveConstraints);
-let filteredWords = words.filter((word: string) => expression.test(word));
+let filteredWords = words.filter((word) => expression.test(word));
 console.log(`EXPRESSION: ${expression}`);
 console.log('RESULTING WORDS:');
 console.log(filteredWords);
@@ -130,9 +130,9 @@ console.log(filteredWords);
 // Filter by full intersection with yellow set
 console.log('Filtering for yellow set:');
 console.log(yellowSet);
-yellowSet.forEach((c: any) => {
+yellowSet.forEach((c) => {
     console.log(`Filtering by contains char: ${c}`)
-    filteredWords = filteredWords.filter((word: string) => word.includes(c));
+    filteredWords = filteredWords.filter((word) => word.includes(c));
     console.log(filteredWords);
 })
 console.log('\nAFTER filtering by yellow letters:')
@@ -143,7 +143,7 @@ console.log(filteredWords);
 const freqs = require('./data/frequencies.json');
 const letterFreqs = require('./data/letter_frequencies.json');
 
-function getRanking(word: string) {
+function getRanking(word) {
     let letters = [];
     let sum = 0;
     for (let i = 0; i < word.length; i++) {
@@ -167,12 +167,12 @@ function getRanking(word: string) {
     return wordFreq;
 }
 
-let values: {[word: string]: number} = {};
-filteredWords.forEach((word: string) => {
+let values = {};
+filteredWords.forEach((word) => {
     values[word] = getRanking(word);
 })
 
-let ranked = filteredWords.sort((a:string, b:string) => values[a] - values[b]).reverse();
+let ranked = filteredWords.sort((a, b) => values[a] - values[b]).reverse();
 console.log('\nWORDS AFTER RANKING:');
 console.log(ranked);
 // Rank by frequency of occurence in english
